@@ -15,7 +15,7 @@ import LoveIcon from "../assets/svg/LoveIcon";
 
 const Section = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
-  const fileUrl = import.meta.env.VITE_FILE_URL
+  const fileUrl = import.meta.env.VITE_FILE_URL;
   const { data, isLoading, error } = useQuery({
     queryKey: "tourData",
     queryFn: () =>
@@ -25,6 +25,10 @@ const Section = () => {
         )
         .then((res) => res.data),
   });
+
+  function formatNumberWithSpaces(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  }
 
   if (isLoading) {
     return (
@@ -77,7 +81,7 @@ const Section = () => {
               <Flex align={"center"} justify={"space-between"}>
                 <Text w={"120px"}>За 2х туристов 7 ночей</Text>
                 <Heading {...css.price}>
-                  от {item?.converted_price_number} сум
+                  от {formatNumberWithSpaces(item?.converted_price_number)} сум
                 </Heading>
               </Flex>
             </Box>
