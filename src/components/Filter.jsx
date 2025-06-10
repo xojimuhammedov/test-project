@@ -1,4 +1,4 @@
-import { Button, Flex, SimpleGrid, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Flex, SimpleGrid, useDisclosure } from "@chakra-ui/react";
 import React from "react";
 import FilterIcon from "../assets/svg/FilterIcon";
 import Sorticon from "../assets/svg/Sorticon";
@@ -9,17 +9,19 @@ const Filter = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <SimpleGrid mb={"15px"} columns={3} align={"center"} gap={"0 10px"}>
-        <Button onClick={onOpen} {...css.button}>
-          <FilterIcon /> Фильтры
-        </Button>
-        <Button onClick={onOpen} {...css.button}>
-          <Sorticon /> Сорт
-        </Button>
-        <Button onClick={onOpen} {...css.button}>
-          <MapIcon /> Карта
-        </Button>
-      </SimpleGrid>
+      <Box className="container">
+        <SimpleGrid mb={"15px"} columns={3} align={"center"} gap={"0 10px"}>
+          <Button onClick={onOpen} {...css.button}>
+            <FilterIcon /> Фильтры
+          </Button>
+          <Button onClick={onOpen} {...css.button}>
+            <Sorticon /> Сорт
+          </Button>
+          <Button onClick={onOpen} {...css.button}>
+            <MapIcon /> Карта
+          </Button>
+        </SimpleGrid>
+      </Box>
       <MobileBottomModal isOpen={isOpen} onClose={onClose} />
     </>
   );

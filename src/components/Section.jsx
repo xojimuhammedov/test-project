@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Image, Spinner, Text } from "@chakra-ui/react";
 import React from "react";
 import Filter from "./Filter";
 import { useQuery } from "react-query";
@@ -14,27 +14,41 @@ import StarIcon from "../assets/svg/StarIcon";
 import LoveIcon from "../assets/svg/LoveIcon";
 
 const Section = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const fileUrl = import.meta.env.VITE_FILE_URL
   const { data, isLoading, error } = useQuery({
     queryKey: "tourData",
     queryFn: () =>
       axios
         .get(
-          "https://travel-api.bpm-tripusk.uz/api/v1/somo-travel/tour-prices-content2?town_from_inc=1853&tour_operator_id=4&state_id=9&checkin=20250712&nights=7&towns%5B%5D=427&adult=1&childs=0&tour_somo_id=427&&page=1&lang=uz"
+          `${apiUrl}/somo-travel/tour-prices-content2?town_from_inc=1853&tour_operator_id=4&state_id=9&checkin=20250712&nights=7&towns%5B%5D=427&adult=1&childs=0&tour_somo_id=427&&page=1&lang=uz`
         )
         .then((res) => res.data),
   });
 
-  console.log(data);
+  if (isLoading) {
+    return (
+      <Flex align={"center"} justify={"center"} p="30px 0">
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        />
+      </Flex>
+    );
+  }
 
   return (
     <Box pb={"10px"}>
       <Box className="container">
-        <Filter />
         {data?.data?.map((item) => (
           <Box {...css.card}>
             <Image
               {...css.image}
-              src={`https://travel-api.bpm-tripusk.uz/storage/${item?.hotel?.main_photo}`}
+              src={`${fileUrl}/${item?.hotel?.main_photo}`}
+              fallbackSrc={`${fileUrl}/${item?.hotel?.main_photo}`}
             />
             <Flex {...css.rank}>
               <StarIcon />
@@ -44,7 +58,9 @@ const Section = () => {
               <LoveIcon />
             </Flex>
             <Box p={"14px"}>
-              <Heading {...css.name}>{item?.hotel?.name} {item?.hotel?.star}</Heading>
+              <Heading {...css.name}>
+                {item?.hotel?.name} {item?.hotel?.star}
+              </Heading>
               <Flex align={"center"} gap={"5px"}>
                 <Location />
                 <Heading {...css.location}>{item?.hotel?.detail?.name}</Heading>
